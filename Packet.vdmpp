@@ -1,0 +1,24 @@
+class Packet
+
+types
+    protocolType = <TCP> | <UDP> | <HTTP> | <HTTPS>;
+    IP = token;
+
+instance variables
+    source : IP;
+    destination : IP;
+    protocol : protocolType;
+    size : nat1;
+    sequenceNumber : nat1;
+
+operations
+
+    public Packet : IP * IP * protocolType * nat1 * nat1 ==> Packet
+    Packet(src, dest, prot, sz, seqNum) == (
+        source := src;
+	destination := dest;
+	protocol := sz;
+	sequenceNumber := seqNum;
+    );
+
+end Packet
