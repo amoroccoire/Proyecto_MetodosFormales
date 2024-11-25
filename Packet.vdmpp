@@ -2,24 +2,33 @@ class Packet
 
 types
     protocolType = <TCP> | <UDP> | <HTTP> | <HTTPS>;
-    IP = token;
+    ipToken = token;
 
 instance variables
-    source : IP;
-    destination : IP;
+    source : ipToken;
+    destination : ipToken;
     protocol : protocolType;
-    size : nat1;
-    sequenceNumber : nat1;
+    size : nat;
+    sequenceNumber : nat;
 
 operations
-
-    public Packet : IP * IP * protocolType * nat1 * nat1 ==> Packet
+    public Packet : ipToken * ipToken * protocolType * nat * nat ==> Packet
     Packet(src, dest, prot, sz, seqNum) == (
         source := src;
-	destination := dest;
-	protocol := prot;
-	size := sz;
-	sequenceNumber := seqNum;
+        destination := dest;
+        protocol := prot;
+        size := sz;
+        sequenceNumber := seqNum
     );
+
+    public getSrc : () ==> token
+    getSrc() == return source;
+
+    public getDest : () ==> token
+    getDest() == return destination;
+
+    public getSeqNumb : () ==> nat
+    getSeqNumb() == return sequenceNumber;
+
 
 end Packet
