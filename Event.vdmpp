@@ -7,14 +7,9 @@ instance variables
     public eventList : set of EventType := {};
 
 operations
-    public createEvent(eventType: EventType) == (
-        eventList := eventList union {eventType}
-    );
+    public createEvent : EventType ==> ()
+    createEvent(eventType) == eventList := eventList union {eventType};
 
     public getEvent : () ==> set of EventType
-    getEvent() == (
-	return eventList;
-    )
-
-
+    getEvent() == return eventList;
 end Event
