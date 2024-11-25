@@ -17,7 +17,8 @@ operations
     Packet(src, dest, prot, sz, seqNum) == (
         source := src;
 	destination := dest;
-	protocol := sz;
+	protocol := prot;
+	size := sz;
 	sequenceNumber := seqNum;
     );
 
