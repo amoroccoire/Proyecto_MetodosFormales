@@ -10,6 +10,12 @@ instance variables
     authorizedSources : set of token := {mk_token("192.168.1.1"), mk_token("192.168.1.2"), mk_token("192.168.1.3")};
 
 operations
+    public TrafficManager : nat * real ==> TrafficManager
+    TrafficManager(umbralTrafico, umbralRetrasmision) == (
+         trafficThreshold := umbralTrafico;
+	 retransmissionThreshold := retransmissionThreshold
+    );
+
     public addPacket(p : Packet, timeInterval : nat) == (
         if timeInterval in set dom traffic then
 	    traffic(timeInterval) := traffic(timeInterval) union {p}
@@ -56,11 +62,14 @@ operations
     blockUnauthorizedTraffic(timeInterval) == (
 	for all p in set traffic(timeInterval) do
 	    if not isAuthorized(p) then
-	        blockPacket(p)
+	        blockedPacket(p)
     )
     pre timeInterval in set dom traffic;
 
-
+    public addAuthorizedSource : token ==> ()
+    addAuthorizedSource(ip) == (
+        authorizedSources := authorizedSources union {ip};
+    );
 
     private IncreaseTraffic : nat ==> bool
     IncreaseTraffic(timeInterval) == (
