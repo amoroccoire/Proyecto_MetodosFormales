@@ -1,0 +1,96 @@
+Initializing specification ... done
+>> tcov reset
+>> create p1 := new Packet(mk_token("192.168.1.10"), mk_token("192.168.1.20"), <TCP>, 500, 1)
+>> create p2 := new Packet(mk_token("192.168.1.10"), mk_token("192.168.1.20"), <TCP>, 500, 2)
+>> create p3 := new Packet(mk_token("10.0.0.5"), mk_token("192.168.1.50"), <HTTP>, 1000, 1)
+>> create tm := new TrafficManager(10, 10.0)
+>> print tm.addPacket(p1, 1)
+(no return value)
+>> print tm.addPacket(p2, 2)
+(no return value)
+>> print tm.addPacket(p3, 3)
+(no return value)
+>> print tm.detectCriticalEvents(1)
+(no return value)
+>> print tm.getEvent()
+{ <ExcessiveRetransmissions>, <UnauthorizedTraffic> }
+>> print tm.ExcessiveRetransmissions(1)
+true
+>> print tm.blockedTraffic
+{  }
+>> print tm.blockUnauthorizedTraffic(1)
+(no return value)
+>> print tm.blockedTraffic
+{ objref5(Packet):
+    <  - Packet`size = 500,
+       - Packet`source = mk_token( "192.168.1.10" ),
+       - Packet`protocol = <TCP>,
+       - Packet`destination = mk_token( "192.168.1.20" ),
+       - Packet`sequenceNumber = 1 > }
+>> print tm.addAuthorizedSource(mk_token("10.0.0.5"))
+(no return value)
+>> print tm.isAuthorized(p3)
+true
+>> create p4 := new Packet(mk_token("10.0.0.1"), mk_token("10.0.0.2"), <TCP>, 100, 1)
+>> create p5 := new Packet(mk_token("10.0.0.1"), mk_token("10.0.0.2"), <TCP>, 100, 2)
+>> create p6 := new Packet(mk_token("10.0.0.1"), mk_token("10.0.0.2"), <TCP>, 100, 3)
+>> create p7 := new Packet(mk_token("10.0.0.1"), mk_token("10.0.0.2"), <TCP>, 100, 4)
+>> create p8 := new Packet(mk_token("10.0.0.1"), mk_token("10.0.0.2"), <TCP>, 100, 5)
+>> create p9 := new Packet(mk_token("10.0.0.1"), mk_token("10.0.0.2"), <TCP>, 100, 6)
+>> create p10 := new Packet(mk_token("10.0.0.1"), mk_token("10.0.0.2"), <TCP>, 100, 7)
+>> create p11 := new Packet(mk_token("10.0.0.1"), mk_token("10.0.0.2"), <TCP>, 100, 8)
+>> create p12 := new Packet(mk_token("10.0.0.1"), mk_token("10.0.0.2"), <TCP>, 100, 9)
+>> create p13 := new Packet(mk_token("10.0.0.1"), mk_token("10.0.0.2"), <TCP>, 100, 10)
+>> print tm.addPacket(p4, 2)
+(no return value)
+>> print tm.addPacket(p5, 2)
+(no return value)
+>> print tm.addPacket(p6, 2)
+(no return value)
+>> print tm.addPacket(p7, 2)
+(no return value)
+>> print tm.addPacket(p8, 2)
+(no return value)
+>> print tm.addPacket(p9, 2)
+(no return value)
+>> print tm.addPacket(p10, 2)
+(no return value)
+>> print tm.addPacket(p11}, 2)
+>> print tm.addPacket(p11, 2)
+(no return value)
+>> print tm.addPacket(p12, 2)
+(no return value)
+>> print tm.addPacket(p13, 2)
+(no return value)
+>> print tm.IncreaseTraffic(2)
+true
+>> print tm.detectCriticalEvents(2)
+(no return value)
+>> print tm.getEvent()
+{ <ExcessiveRetransmissions>, <HighTraffic>, <UnauthorizedTraffic> }
+>> tcov write vdm.tc
+>> rtinfo vdm.tc
+  100%      2  Event`getEvent
+  100%      5  Event`createEvent
+  100%  Event
+  100%     13  Packet`Packet
+  100%    140  Packet`getSrc
+  100%    116  Packet`getDest
+  100%    116  Packet`getSeqNumb
+  100%  Packet
+  100%      2  TrafficManager`getEvent
+  100%     13  TrafficManager`addPacket
+  100%      4  TrafficManager`isAuthorized
+  100%      1  TrafficManager`blockedPacket
+  100%      1  TrafficManager`TrafficManager
+  100%      3  TrafficManager`IncreaseTraffic
+  100%     13  TrafficManager`isRetransmitted
+  100%      2  TrafficManager`UnauthorizedTraffic
+  100%      1  TrafficManager`addAuthorizedSource
+  100%      2  TrafficManager`detectCriticalEvents
+  100%      3  TrafficManager`ExcessiveRetransmissions
+  100%      1  TrafficManager`blockUnauthorizedTraffic
+  100%  TrafficManager
+
+Total Coverage: 100%
+
