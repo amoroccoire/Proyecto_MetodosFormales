@@ -1,0 +1,20 @@
+class Event
+
+types
+    EventType = <HighTraffic> | <ExcessiveRetransmissions> | <UnauthorizedTraffic>
+
+instance variables
+    public eventList : set of EventType := {};
+
+operations
+    public createEvent(eventType: EventType) == (
+        eventList := eventList union {eventType}
+    );
+
+    public getEvent : () ==> set of EventType
+    getEvent() == (
+	return eventType;
+    )
+
+
+end Event
