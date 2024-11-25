@@ -13,7 +13,7 @@ operations
     public TrafficManager : nat * real ==> TrafficManager
     TrafficManager(umbralTrafico, umbralRetrasmision) == (
          trafficThreshold := umbralTrafico;
-	 retransmissionThreshold := retransmissionThreshold
+         retransmissionThreshold := umbralRetrasmision
     );
 
     public addPacket(p : Packet, timeInterval : nat) == (
