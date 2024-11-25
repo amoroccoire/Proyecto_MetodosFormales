@@ -1,0 +1,82 @@
+class TrafficManager
+
+instance variables
+    public traffic : map nat to set of Packet := {|->};
+    public blockedTraffic : set of Packet := {};
+    private eventManager : Event := new Event();
+
+values
+    trafficThreshold : nat = 100; --paquetes por intervalo
+    retransmissionThreshold : real = 20.0; --significa que hasta un 20% de retransmisiones son aceptables
+    authorizedSources : set of IP := {mk_token("192.168.1.1"), mk_token("192.168.1.2"), mk_token("192.168.1.3")};
+
+operations
+    public addPacket(p : Packet, timeInterval : nat) == (
+        if timeInterval in set dom traffic then
+	    traffic(timeInterval) := traffic(timeInterval) union {p}
+	else (
+	    traffic := traffic munion {timeInterval |-> {p}}
+	);
+    );
+
+    public detectCriticalEvents(timeInterval: nat) == (
+	if IncreaseTraffic(timeInterval) then
+	    eventManager.createEvent(<HighTrafic>);
+	if ExcessiveRetransmissions(timeInterval) then
+	    eventManager.createEvent(<ExcessiveRetransmissions>);
+	if UnauthorizedTraffic(timeInterval) then
+	    eventManager.createEvent(<UnauthorizedTraffic>)
+	
+    );
+
+    public getEvent : () ==> set of EventType
+    getEvent() == (
+	return eventManager.getEvent();
+    );
+
+    public blockedPacket(p : Packet) == (
+        blockedTraffic := blockedTraffic union {p};
+    );
+
+    public isAuthorized : Packet ==> bool
+    isAuthorized(p) == (
+	return p.source in set authorizedSources
+    )
+    pre p <> nil;
+
+    public isRetransmitted : Packet * nat ==> bool
+    isRetransmitted(p, timeInt) == (
+	return exists q in set traffic(timeInt) &
+	    p.source = q.source and
+	    p.destination = q.destination and
+	    p.sequenceNumber = q.sequenceNumber
+    )
+    pre p <> nil and timeInt in set dom traffic;
+
+    public blockUnauthorizedTraffic : nat ==> bool
+    blockUnauthorizedTraffic(timeInterval) == (
+	for all p in set traffic(timeInterval) do
+	    if not isAuthorized(p) then
+	        blockPacket(p)
+    )
+    pre timeInterval in set dom traffic;
+
+
+
+    private IncreaseTraffic : nat ==> bool
+    IncreaseTraffic(timeInterval) == (
+	card traffic(timeInterval) > trafficThreshold;
+    );
+
+    private ExcessiveRetransmissions : nat ==> bool
+    ExcessiveRetransmissions(timeInterval) == (
+	return {p | p in set traffic(timeInterval) & isRetransmitted(p, timeInterval)} in (card retransmitted / card traffic(timeInterval)) * 100 > retransmissionThreshold 
+ ;
+
+    private UnauthorizedTraffic : nat ==> bool
+    UnauthorizedTraffic(timeInterval) == (
+	return exists p in set traffic(timeInterval) & not isAuthorized(p);
+    );
+     
+
+end TrafficManager
