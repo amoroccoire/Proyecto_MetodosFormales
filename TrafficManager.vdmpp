@@ -64,7 +64,7 @@ operations
 
     private IncreaseTraffic : nat ==> bool
     IncreaseTraffic(timeInterval) == (
-	card traffic(timeInterval) > trafficThreshold;
+	return card traffic(timeInterval) > trafficThreshold;
     );
 
     private ExcessiveRetransmissions : nat ==> bool
