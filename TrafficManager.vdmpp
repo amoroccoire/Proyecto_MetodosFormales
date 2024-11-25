@@ -5,9 +5,8 @@ instance variables
     public blockedTraffic : set of Packet := {};
     private eventManager : Event := new Event();
 
-values
-    trafficThreshold : nat = 100; --paquetes por intervalo
-    retransmissionThreshold : real = 20.0; --significa que hasta un 20% de retransmisiones son aceptables
+    trafficThreshold : nat := 100; --paquetes por intervalo
+    retransmissionThreshold : real := 20.0; --significa que hasta un 20% de retransmisiones son aceptables
     authorizedSources : set of IP := {mk_token("192.168.1.1"), mk_token("192.168.1.2"), mk_token("192.168.1.3")};
 
 operations
